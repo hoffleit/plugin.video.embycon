@@ -35,6 +35,7 @@ from . import trakttokodi
 from .cache_images import CacheArtwork
 from .dir_functions import getContent, processDirectory
 from .tracking import timer
+from main_window import MainAppWindow, MainAppWindowThread
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -156,8 +157,14 @@ def mainEntryPoint():
         elif mode == "PLAY":
             PLAY(params)
         else:
-            checkServer()
-            displaySections()
+
+            xbmc.executebuiltin('Dialog.Close(busydialog)')
+            xbmc.executebuiltin("ActivateWindow(Home)")
+            main_window_thread = MainAppWindowThread()
+            main_window_thread.start()
+
+            #checkServer()
+            #displaySections()
 
     if pr:
         pr.disable()
